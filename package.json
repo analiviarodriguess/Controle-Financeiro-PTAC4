@@ -5,7 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "db:up": "docker start controle-financeiro || docker run -d --name controle-financeiro -p 127.0.0.1:27017:27017 -v controle-financeiro-data:/data/db mongo:8",
+    "db:down": "docker stop controle-financeiro",
+    "db:logs": "docker logs -f controle-financeiro",
+    "db:reset": "docker rm -f controle-financeiro; docker volume rm controle-financeiro-data",
+    "predev": "npm run db:up",
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js"
   },
   "repository": {
     "type": "git",
