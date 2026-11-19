@@ -11,7 +11,7 @@
     "db:reset": "docker rm -f controle-financeiro; docker volume rm controle-financeiro-data",
     "predev": "npm run db:up",
     "dev": "node --watch src/server.js",
-    "start": "node src/server.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
