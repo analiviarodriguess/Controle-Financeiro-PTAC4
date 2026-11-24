@@ -10,7 +10,7 @@ router.use(autenticar);
 
 const TIPOS = ['receita', 'despesa'];
 
-// Criar categoria
+
 router.post('/', (req, res) => {
   const { nome, tipo } = req.body || {};
 
@@ -35,7 +35,7 @@ router.post('/', (req, res) => {
   return res.status(201).json(categoria);
 });
 
-// Listar as categorias do usuário
+
 router.get('/', (req, res) => {
   const minhasCategorias = categorias.filter(categoria =>
     categoria.usuarioId === req.usuarioId

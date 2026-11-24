@@ -10,7 +10,7 @@ const { enviarErro } = require('./utils/erros');
 const app = express();
 const PORTA = process.env.PORT || 3000;
 
-// Libera o front-end (Vite) para conversar com a API.
+
 app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(express.json());
 
@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
   });
 });
 
-// Todas as rotas ficam sob /api/v1
+
 const api = express.Router();
 api.use('/usuarios', rotasUsuarios);
 api.use('/contas', routesContas);
@@ -30,12 +30,12 @@ api.use('/lancamentos', routesLancamentos);
 api.use('/relatorios', routesRelatorios);
 app.use('/api/v1', api);
 
-// Rota que não existe
+
 app.use((req, res) => {
   return enviarErro(res, 404, 'not_found', 'Rota não encontrada.');
 });
 
-// Qualquer erro que escapar das rotas
+
 app.use((erro, req, res, next) => {
   if (erro.type === 'entity.parse.failed') {
     return enviarErro(res, 400, 'validation', 'JSON inválido.');

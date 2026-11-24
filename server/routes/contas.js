@@ -15,7 +15,7 @@ function buscarConta(req) {
   );
 }
 
-// Listar somente as contas do usuário autenticado.
+
 router.get('/', (req, res) => {
   const minhasContas = contas.filter(conta =>
     conta.usuarioId === req.usuarioId
@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
   });
 });
 
-// Cadastrar uma conta.
+
 router.post('/', (req, res) => {
   const { nome, saldoInicialCentavos } = req.body || {};
 
@@ -52,7 +52,7 @@ router.post('/', (req, res) => {
   return res.status(201).json(conta);
 });
 
-// Consultar uma conta.
+
 router.get('/:id', (req, res) => {
   const conta = buscarConta(req);
 
@@ -63,7 +63,7 @@ router.get('/:id', (req, res) => {
   return res.status(200).json(conta);
 });
 
-// Atualizar uma conta.
+
 router.patch('/:id', (req, res) => {
   const conta = buscarConta(req);
 
@@ -101,7 +101,7 @@ router.patch('/:id', (req, res) => {
   return res.status(200).json(conta);
 });
 
-// Excluir uma conta.
+
 router.delete('/:id', (req, res) => {
   const conta = buscarConta(req);
 
@@ -109,7 +109,7 @@ router.delete('/:id', (req, res) => {
     return enviarErro(res, 404, 'not_found', 'Conta não encontrada.');
   }
 
-  // Não deixa lançamentos "órfãos" para trás.
+  
   const temLancamentos = lancamentos.some(lancamento =>
     lancamento.contaId === conta.id
   );

@@ -1,4 +1,4 @@
-const baseUrl = "https://curly-halibut-g4wwxvgp5xrq2pgv5-3000.app.github.dev";
+const baseUrl = "/api/v1";
 
 let token = null;
 
@@ -6,27 +6,39 @@ export function setToken(novoToken) {
   token = novoToken;
 }
 
+const MENSAGENS_POR_STATUS = {
+  400: "Dados inválidos",
+  401: "Sessão expirada ou login inválido",
+  404: "Item não encontrado",
+  409: "Registro já cadastrado",
+  500: "Erro no servidor. A API está ligada?",
+};
+
 async function requisicao(caminho, opcoes = {}) {
   const headers = { "Content-Type": "application/json" };
   if (token) headers.Authorization = `Bearer ${token}`;
 
-  const response = await fetch(`${baseUrl}${caminho}`, { ...opcoes, headers });
+  let response;
+  try {
+    response = await fetch(`${baseUrl}${caminho}`, { ...opcoes, headers });
+  } catch (erro) {
+    
+    if (erro.name === "AbortError") throw erro;
+    throw new Error("Não foi possível conectar à API. Ela está ligada?");
+  }
 
   if (!response.ok) {
-    const mensagens = {
-      400: "Dados inválidos",
-      401: "Sessão expirada ou login inválido",
-      404: "Item não encontrado",
-      409: "Registro já cadastrado",
-    };
-    let mensagem = mensagens[response.status] || `Erro ${response.status}`;
+    let mensagem = MENSAGENS_POR_STATUS[response.status] || `Erro ${response.status}`;
     try {
-      const erro = await response.json();
-      mensagem = erro.erro || erro.message || mensagem;
+      
+      const corpo = await response.json();
+      if (corpo.message) mensagem = corpo.message;
     } catch {
-      // resposta sem corpo
+      
     }
-    throw new Error(mensagem);
+    const erro = new Error(mensagem);
+    erro.status = response.status;
+    throw erro;
   }
 
   if (response.status === 204) return null;
@@ -42,6 +54,11 @@ export function apiLogin(email, senha) {
 
 export function apiGet(caminho, signal) {
   return requisicao(caminho, { signal });
+}
+
+export async function apiListar(caminho, signal) {
+  const resposta = await requisicao(caminho, { signal });
+  return resposta.data;
 }
 
 export function apiPost(caminho, dados) {

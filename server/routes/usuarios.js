@@ -7,7 +7,7 @@ const { enviarErro } = require('../utils/erros');
 const router = express.Router();
 const gerarHash = promisify(crypto.scrypt);
 
-// Cadastrar usuário
+
 router.post('/', async (req, res, next) => {
   try {
     const { nome, email, senha } = req.body || {};
@@ -31,7 +31,7 @@ router.post('/', async (req, res, next) => {
     const emailJaExiste = () =>
       usuarios.some(usuario => usuario.email === emailNormalizado);
 
-    // Confere antes de gastar processamento com o hash...
+    
     if (emailJaExiste()) {
       return enviarErro(res, 409, 'conflict', 'Email já cadastrado.');
     }
@@ -39,7 +39,7 @@ router.post('/', async (req, res, next) => {
     const salt = crypto.randomBytes(16).toString('hex');
     const hash = await gerarHash(senha, salt, 64);
 
-    // ...e confere de novo, caso outro cadastro tenha entrado enquanto o hash era feito.
+    
     if (emailJaExiste()) {
       return enviarErro(res, 409, 'conflict', 'Email já cadastrado.');
     }
@@ -64,7 +64,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-// Login
+
 router.post('/login', async (req, res, next) => {
   try {
     const { email, senha } = req.body || {};
@@ -90,7 +90,7 @@ router.post('/login', async (req, res, next) => {
       return enviarErro(res, 401, 'unauthorized', 'Email ou senha incorretos.');
     }
 
-    // Limpa as sessões vencidas para a lista não crescer para sempre.
+    
     for (let i = sessoes.length - 1; i >= 0; i--) {
       if (sessoes[i].expiraEm <= Date.now()) {
         sessoes.splice(i, 1);

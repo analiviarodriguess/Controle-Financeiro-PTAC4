@@ -10,7 +10,7 @@ router.use(autenticar);
 
 const TIPOS = ['receita', 'despesa'];
 
-// Aceita só datas reais no formato AAAA-MM-DD (ex.: 2026-11-24).
+
 function dataValida(data) {
   if (typeof data !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(data)) {
     return false;
@@ -22,7 +22,7 @@ function dataValida(data) {
     objeto.toISOString().slice(0, 10) === data;
 }
 
-// Valida o corpo da requisição. Devolve { erro } ou { dados }.
+
 function lerDados(corpo, usuarioId) {
   const {
     descricao, valorCentavos, tipo, data, contaId, categoriaId
@@ -86,7 +86,7 @@ function buscarLancamento(req) {
   );
 }
 
-// Listar (mais recentes primeiro)
+
 router.get('/', (req, res) => {
   const meus = lancamentos
     .filter(lancamento => lancamento.usuarioId === req.usuarioId)
@@ -98,7 +98,7 @@ router.get('/', (req, res) => {
   });
 });
 
-// Cadastrar
+
 router.post('/', (req, res) => {
   const { erro, dados } = lerDados(req.body, req.usuarioId);
 
@@ -117,7 +117,7 @@ router.post('/', (req, res) => {
   return res.status(201).json(lancamento);
 });
 
-// Consultar um
+
 router.get('/:id', (req, res) => {
   const lancamento = buscarLancamento(req);
 
@@ -128,7 +128,7 @@ router.get('/:id', (req, res) => {
   return res.status(200).json(lancamento);
 });
 
-// Editar (PUT: envia todos os campos)
+
 router.put('/:id', (req, res) => {
   const lancamento = buscarLancamento(req);
 

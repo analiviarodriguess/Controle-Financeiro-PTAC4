@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
   });
 });
 
-// Saldo de uma conta = saldo inicial + receitas - despesas
+
 router.get('/saldo/:contaId', (req, res) => {
   const conta = contas.find(conta =>
     conta.id === req.params.contaId &&
@@ -50,7 +50,7 @@ router.get('/saldo/:contaId', (req, res) => {
   });
 });
 
-// Extrato entre duas datas: /extrato?inicio=2026-11-01&fim=2026-11-30
+
 router.get('/extrato', (req, res) => {
   const { inicio, fim } = req.query;
 
@@ -84,7 +84,7 @@ router.get('/extrato', (req, res) => {
   });
 });
 
-// Total de despesas por categoria
+
 router.get('/categorias', (req, res) => {
   const meus = meusLancamentosDe(req);
   const minhasCategorias = categorias.filter(categoria =>
@@ -118,7 +118,7 @@ router.get('/categorias', (req, res) => {
   });
 });
 
-// Resumo mês a mês
+
 router.get('/mensal', (req, res) => {
   const meses = {};
 
