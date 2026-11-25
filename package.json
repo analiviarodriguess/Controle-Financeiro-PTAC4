@@ -1,0 +1,25 @@
+{
+  "name": "controle-financeiro-ptac4",
+  "version": "1.0.0",
+  "description": "**Tema do app:** Controle Financeiro. O app gerencia **lançamentos** (receitas e despesas) e usa o recurso `/lancamentos` da API Express do PTAS3, que está neste mesmo repositório, na pasta `server/`.",
+  "main": "teste.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/analiviarodriguess/Controle-Financeiro-PTAC4.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/analiviarodriguess/Controle-Financeiro-PTAC4/issues"
+  },
+  "homepage": "https://github.com/analiviarodriguess/Controle-Financeiro-PTAC4#readme",
+  "dependencies": {
+    "concurrently": "^10.0.7"
+  }
+}
