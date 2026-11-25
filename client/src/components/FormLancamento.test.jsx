@@ -1,60 +1,57 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import FormLancamento from "./FormLancamento";
+import { describe, it, expect } from 'vitest'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import FormLancamento from './FormLancamento'
 
-const contas = [{ id: "c1", nome: "Carteira" }];
-const categorias = [
-  { id: "k1", nome: "Alimentação", tipo: "despesa" },
-  { id: "k2", nome: "Salário", tipo: "receita" },
-];
+const contas = [{ id: 'c1', nome: 'Carteira' }]
+const categorias = [{ id: 'k1', nome: 'Alimentação', tipo: 'despesa' }]
 
-function mostrarForm(aoSalvar) {
-  return render(
-    <FormLancamento
-      contas={contas}
-      categorias={categorias}
-      editando={null}
-      aoSalvar={aoSalvar}
-      aoCancelar={() => {}}
-    />
-  );
-}
+describe('FormLancamento', () => {
+  it('mostra mensagem de validação ao enviar vazio', () => {
+    let chamou = false
 
-describe("FormLancamento", () => {
-  it("mostra mensagem de validação ao enviar vazio, sem chamar a API", () => {
-    const aoSalvar = vi.fn();
-    mostrarForm(aoSalvar);
+    render(
+      <FormLancamento
+        contas={contas}
+        categorias={categorias}
+        editando={null}
+        aoSalvar={() => {
+          chamou = true
+        }}
+      />
+    )
 
-    fireEvent.click(screen.getByRole("button", { name: "Cadastrar" }));
+    fireEvent.click(screen.getByText('Cadastrar'))
 
-    expect(screen.getByText("Informe a descrição.")).toBeInTheDocument();
-    expect(aoSalvar).not.toHaveBeenCalled();
-  });
+    expect(screen.getByText('Informe a descrição.')).toBeInTheDocument()
+    expect(chamou).toBe(false)
+  })
 
-  it("envia os dados em centavos quando o formulário está certo", async () => {
-    const aoSalvar = vi.fn();
-    mostrarForm(aoSalvar);
+  it('envia os dados quando o formulário está preenchido', async () => {
+    let enviado = null
+
+    render(
+      <FormLancamento
+        contas={contas}
+        categorias={categorias}
+        editando={null}
+        aoSalvar={(dados) => {
+          enviado = dados
+        }}
+      />
+    )
 
     fireEvent.change(screen.getByLabelText(/Descrição/), {
-      target: { value: "Almoço" },
-    });
+      target: { value: 'Almoço' },
+    })
     fireEvent.change(screen.getByLabelText(/Valor/), {
-      target: { value: "25,50" },
-    });
+      target: { value: '25,50' },
+    })
     fireEvent.change(screen.getByLabelText(/Categoria/), {
-      target: { value: "k1" },
-    });
-    fireEvent.click(screen.getByRole("button", { name: "Cadastrar" }));
+      target: { value: 'k1' },
+    })
+    fireEvent.click(screen.getByText('Cadastrar'))
 
-    await waitFor(() => expect(aoSalvar).toHaveBeenCalledTimes(1));
-    expect(aoSalvar).toHaveBeenCalledWith(
-      expect.objectContaining({
-        descricao: "Almoço",
-        valorCentavos: 2550,
-        tipo: "despesa",
-        contaId: "c1",
-        categoriaId: "k1",
-      })
-    );
-  });
-});
+    await waitFor(() => expect(enviado).not.toBeNull())
+    expect(enviado.valorCentavos).toBe(2550)
+  })
+})

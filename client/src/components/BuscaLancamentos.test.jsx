@@ -1,16 +1,24 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
-import BuscaLancamentos from "./BuscaLancamentos";
+import { describe, it, expect } from 'vitest'
+import { render, screen, fireEvent } from '@testing-library/react'
+import BuscaLancamentos from './BuscaLancamentos'
 
-describe("BuscaLancamentos", () => {
-  it("avisa o que foi digitado", () => {
-    const aoMudar = vi.fn();
-    render(<BuscaLancamentos valor="" aoMudar={aoMudar} />);
+describe('BuscaLancamentos', () => {
+  it('avisa o que foi digitado', () => {
+    let digitado = ''
+
+    render(
+      <BuscaLancamentos
+        valor=""
+        aoMudar={(texto) => {
+          digitado = texto
+        }}
+      />
+    )
 
     fireEvent.change(screen.getByLabelText(/Buscar/), {
-      target: { value: "almo" },
-    });
+      target: { value: 'almo' },
+    })
 
-    expect(aoMudar).toHaveBeenCalledWith("almo");
-  });
-});
+    expect(digitado).toBe('almo')
+  })
+})

@@ -1,17 +1,15 @@
 function BuscaLancamentos({ valor, aoMudar }) {
   return (
-    <p className="busca">
-      <label>
-        Buscar por descrição<br />
-        <input
-          type="search"
-          value={valor}
-          onChange={(e) => aoMudar(e.target.value)}
-          placeholder="Ex.: almoço"
-        />
-      </label>
-    </p>
-  );
+    <div className="busca">
+      <label htmlFor="busca">Buscar por descrição</label>
+      <input
+        id="busca"
+        value={valor}
+        onChange={(e) => aoMudar(e.target.value)}
+        placeholder="Ex.: almoço"
+      />
+    </div>
+  )
 }
 
-export default BuscaLancamentos;
+export default BuscaLancamentos
