@@ -39,46 +39,63 @@ function Login({ aoEntrar }) {
   }
 
   return (
-    <main style={{ maxWidth: 360, margin: "40px auto", padding: 16 }}>
-      <h1>Controle Financeiro</h1>
-      <h2>{modoCadastro ? "Criar conta" : "Entrar"}</h2>
+    <main className="login">
+      <div className="login-cartao">
+        <h1 className="marca">Controle Financeiro</h1>
+        <h2>{modoCadastro ? "Criar conta" : "Entrar"}</h2>
+        <p className="login-sub">
+          {modoCadastro
+            ? "Crie sua conta para começar a organizar suas finanças."
+            : "Entre para ver seus lançamentos."}
+        </p>
 
-      <form onSubmit={enviar}>
-        {modoCadastro && (
-          <p>
+        <form onSubmit={enviar}>
+          {modoCadastro && (
             <label>
               Nome<br />
-              <input value={nome} onChange={(e) => setNome(e.target.value)} />
+              <input
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                autoComplete="name"
+              />
             </label>
-          </p>
-        )}
+          )}
 
-        <p>
           <label>
             Email<br />
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+            />
           </label>
-        </p>
 
-        <p>
           <label>
             Senha<br />
-            <input type="password" value={senha} onChange={(e) => setSenha(e.target.value)} />
+            <input
+              type="password"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              autoComplete={modoCadastro ? "new-password" : "current-password"}
+            />
           </label>
-        </p>
 
-        {erro && <p style={{ color: "red" }}>{erro}</p>}
+          {erro && <p className="erro">{erro}</p>}
 
-        <button type="submit" disabled={carregando}>
-          {carregando ? "Aguarde..." : modoCadastro ? "Criar conta e entrar" : "Entrar"}
-        </button>
-      </form>
+          <button type="submit" disabled={carregando}>
+            {carregando ? "Aguarde..." : modoCadastro ? "Criar conta e entrar" : "Entrar"}
+          </button>
+        </form>
 
-      <p>
-        <button type="button" onClick={() => setModoCadastro(!modoCadastro)}>
+        <button
+          type="button"
+          className="botao-link"
+          onClick={() => setModoCadastro(!modoCadastro)}
+        >
           {modoCadastro ? "Já tenho conta" : "Quero criar uma conta"}
         </button>
-      </p>
+      </div>
     </main>
   );
 }

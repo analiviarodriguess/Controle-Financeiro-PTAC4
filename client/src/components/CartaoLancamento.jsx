@@ -11,14 +11,20 @@ function CartaoLancamento({
 
   return (
     <article className={`cartao ${lancamento.tipo}`}>
-      <h3>{lancamento.descricao}</h3>
-      <p className="valor">
-        {sinal} {formatarValor(lancamento.valorCentavos)}
-      </p>
-      <p>Tipo: {lancamento.tipo}</p>
-      <p>Data: {formatarData(lancamento.data)}</p>
-      <p>Categoria: {nomeCategoria}</p>
-      <p>Conta: {nomeConta}</p>
+      <div className="cartao-topo">
+        <h3>{lancamento.descricao}</h3>
+        <p className="valor">
+          {sinal} {formatarValor(lancamento.valorCentavos)}
+        </p>
+      </div>
+
+      <div className="cartao-meta">
+        <span className="selo">{lancamento.tipo}</span>
+        <p>Data: {formatarData(lancamento.data)}</p>
+        <p>Categoria: {nomeCategoria}</p>
+        <p>Conta: {nomeConta}</p>
+      </div>
+
       <div className="acoes">
         <button type="button" onClick={() => aoEditar(lancamento)}>
           Editar
